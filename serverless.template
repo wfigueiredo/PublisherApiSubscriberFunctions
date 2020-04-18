@@ -1,0 +1,103 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Transform" : "AWS::Serverless-2016-10-31",
+  "Description" : "template for an AWS Serverless Application.",
+  "Parameters" : {
+  },
+  "Resources" : {
+    "UserInsert" : {
+      "Type" : "AWS::Serverless::Function",
+      "Properties": {
+		"FunctionName" : "UserInsert",
+        "Handler": "PublisherApiSubscriberFunctions::PublisherApiSubscriberFunctions.Handler::UserInsert",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "Description": "Persist records in User Table through incoming SQS messages",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": "arn:aws:iam::628277270038:role/Role-Lambda-Integration",
+        "Events": {
+          "MySQSEvent": {
+            "Type": "SQS",
+            "Properties": {
+              "Queue": "arn:aws:sqs:sa-east-1:628277270038:UserQueue.fifo",
+              "BatchSize": 10
+            }
+          }
+        }
+      }
+    },
+	"PlayStation4GameInsert" : {
+      "Type" : "AWS::Serverless::Function",
+      "Properties": {
+		"FunctionName" : "PlayStation4GameInsert",
+        "Handler": "PublisherApiSubscriberFunctions::PublisherApiSubscriberFunctions.Handler::GameInsert",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "Description": "Persist PlayStation 4 games in Game Table through incoming SQS messages",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": "arn:aws:iam::628277270038:role/Role-Lambda-Integration",
+        "Events": {
+          "MySQSEvent": {
+            "Type": "SQS",
+            "Properties": {
+              "Queue": "arn:aws:sqs:sa-east-1:628277270038:PlayStationQueue.fifo",
+              "BatchSize": 10
+            }
+          }
+        }
+      }
+    },
+	"NintendoSwitchGameInsert" : {
+      "Type" : "AWS::Serverless::Function",
+      "Properties": {
+		"FunctionName" : "NintendoSwitchGameInsert",
+        "Handler": "PublisherApiSubscriberFunctions::PublisherApiSubscriberFunctions.Handler::GameInsert",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "Description": "Persist Nintendo Switch games in Game Table through incoming SQS messages",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": "arn:aws:iam::628277270038:role/Role-Lambda-Integration",
+        "Events": {
+          "MySQSEvent": {
+            "Type": "SQS",
+            "Properties": {
+              "Queue": "arn:aws:sqs:sa-east-1:628277270038:SwitchQueue.fifo",
+              "BatchSize": 10
+            }
+          }
+        }
+      }
+    },
+	"XboxOneGameInsert" : {
+      "Type" : "AWS::Serverless::Function",
+      "Properties": {
+		"FunctionName" : "XboxOneGameInsert",
+        "Handler": "PublisherApiSubscriberFunctions::PublisherApiSubscriberFunctions.Handler::GameInsert",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "Description": "Persist Xbox One games in Game Table through incoming SQS messages",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": "arn:aws:iam::628277270038:role/Role-Lambda-Integration",
+        "Events": {
+          "MySQSEvent": {
+            "Type": "SQS",
+            "Properties": {
+              "Queue": "arn:aws:sqs:sa-east-1:628277270038:XboxQueue.fifo",
+              "BatchSize": 10
+            }
+          }
+        }
+      }
+    }
+  },
+  "Outputs" : {
+    "ApiURL" : {
+        "Description" : "API endpoint URL for Dev environment",
+        "Value" : { "Fn::Sub" : "https://${AWS::Region}.amazonaws.com/Dev/" }
+    }
+  }
+}
