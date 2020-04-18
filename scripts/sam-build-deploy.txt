@@ -1,0 +1,15 @@
+<<< SAM deploy steps >>>
+
+-> Execute in project root!
+
+# 1. Build SAM template
+sam build --template-file serverless.template
+
+# 2. Package SAM template
+sam package --template-file serverless.template --s3-bucket publisherapi --s3-prefix sam-packages --output-template-file template.yaml
+
+# 3. Deploy packaged SAM template
+sam deploy --template-file template.yaml --stack-name publisherapi-stack --capabilities CAPABILITY_IAM
+
+# >>> Delete stack, if needed
+aws cloudformation delete-stack --stack-name publisherapi-stack
